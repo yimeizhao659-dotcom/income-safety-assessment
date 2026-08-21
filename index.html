@@ -1,365 +1,96 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f2ea">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>35+女性收入安全感测评</title>
   <style>
-    :root {
-      --ink: #25342f;
-      --muted: #69736f;
-      --paper: #fffdf9;
-      --sand: #f7f2ea;
-      --green: #365f52;
-      --green-soft: #e3ece7;
-      --gold: #c98f4c;
-      --line: #e6ded2;
-      --shadow: 0 18px 50px rgba(49, 57, 50, 0.09);
-      --radius: 24px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 8% 8%, rgba(201, 143, 76, 0.12), transparent 28rem),
-        radial-gradient(circle at 92% 92%, rgba(54, 95, 82, 0.12), transparent 30rem),
-        var(--sand);
-      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-      line-height: 1.6;
-    }
-
-    button { font: inherit; }
-
-    .app {
-      width: min(100% - 32px, 720px);
-      margin: 0 auto;
-      padding: 24px 0 40px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 22px;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-    }
-
-    .brand-mark {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      color: white;
-      background: var(--green);
-      border-radius: 50% 50% 50% 12px;
-    }
-
-    .screen {
-      display: none;
-      animation: enter 0.35s ease both;
-    }
-
-    .screen.active { display: block; }
-
-    @keyframes enter {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card {
-      padding: clamp(24px, 6vw, 48px);
-      background: rgba(255, 253, 249, 0.94);
-      border: 1px solid rgba(230, 222, 210, 0.9);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .eyebrow {
-      margin: 0 0 12px;
-      color: var(--gold);
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-    }
-
-    h1, h2, p { margin-top: 0; }
-
-    h1 {
-      max-width: 560px;
-      margin-bottom: 18px;
-      font-family: Georgia, "Songti SC", serif;
-      font-size: clamp(34px, 9vw, 58px);
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-    }
-
-    h2 {
-      margin-bottom: 26px;
-      font-size: clamp(23px, 5vw, 32px);
-      line-height: 1.4;
-    }
-
-    .lead { color: var(--muted); font-size: 16px; }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 28px 0;
-    }
-
-    .feature {
-      padding: 14px 8px;
-      text-align: center;
-      background: var(--green-soft);
-      border-radius: 14px;
-    }
-
-    .feature strong { display: block; font-size: 18px; }
-    .feature span { color: var(--muted); font-size: 12px; }
-
-    .button {
-      width: 100%;
-      min-height: 54px;
-      padding: 14px 24px;
-      color: white;
-      background: var(--green);
-      border: 0;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .button:hover { background: #294d42; transform: translateY(-1px); }
-    .button:focus-visible, .option:focus-visible { outline: 3px solid rgba(201, 143, 76, 0.45); outline-offset: 3px; }
-    .button.secondary { color: var(--green); background: var(--green-soft); }
-    .button:disabled { cursor: not-allowed; opacity: 0.45; transform: none; }
-
-    .privacy { margin: 14px 0 0; color: var(--muted); text-align: center; font-size: 12px; }
-
-    .progress-head {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .progress-track {
-      height: 6px;
-      margin-bottom: 32px;
-      overflow: hidden;
-      background: var(--green-soft);
-      border-radius: 999px;
-    }
-
-    .progress-bar { height: 100%; width: 0; background: var(--gold); border-radius: inherit; transition: width 0.3s ease; }
-
-    .options { display: grid; gap: 12px; margin-bottom: 26px; }
-
-    .option {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      padding: 15px 17px;
-      color: var(--ink);
-      text-align: left;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      cursor: pointer;
-    }
-
-    .option:hover { border-color: #9eb3aa; }
-    .option.selected { background: var(--green-soft); border-color: var(--green); }
-    .option-letter { color: var(--gold); font-family: Georgia, serif; font-weight: 700; }
-
-    .nav-actions { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 10px; }
-
-    .result-top { text-align: center; }
-    .result-badge {
-      display: grid;
-      width: 104px;
-      height: 104px;
-      margin: 4px auto 18px;
-      place-items: center;
-      color: white;
-      background: var(--green);
-      border: 8px solid var(--green-soft);
-      border-radius: 50%;
-      font-family: Georgia, serif;
-      font-size: 42px;
-      font-weight: 700;
-    }
-
-    .result-title { margin-bottom: 8px; }
-    .result-copy { color: var(--muted); }
-    .result-note { padding: 18px; margin: 26px 0; background: #fbf2e7; border-left: 4px solid var(--gold); border-radius: 4px 14px 14px 4px; }
-
-    footer { padding-top: 22px; color: var(--muted); text-align: center; font-size: 12px; }
-
-    @media (max-width: 460px) {
-      .app { width: min(100% - 24px, 720px); padding-top: 16px; }
-      .card { border-radius: 20px; }
-      .features { gap: 6px; }
-      .feature { padding-inline: 4px; }
-      .nav-actions { grid-template-columns: 1fr; }
-      .nav-actions .secondary { order: 2; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
-    }
+    :root{--bg:#f7f5f2;--card:#fff;--text:#2f2f2f;--muted:#77716b;--line:#e8e1da;--accent:#8f6f61;--accent-dark:#725448;--accent-soft:#efe6e1;--shadow:0 12px 30px rgba(71,54,44,.07);--radius:22px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+    button{font:inherit}.app{min-height:100vh;padding:24px 16px 40px;display:flex;justify-content:center}.shell{width:100%;max-width:760px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}.hidden{display:none!important}
+    .eyebrow{display:inline-block;font-size:13px;letter-spacing:.08em;color:var(--accent-dark);background:var(--accent-soft);padding:6px 10px;border-radius:999px;margin-bottom:14px}
+    h1,h2,h3,p{margin-top:0} h1{font-size:30px;line-height:1.3;margin-bottom:14px} h2{font-size:24px;line-height:1.4;margin-bottom:14px}.subtitle{font-size:19px;font-weight:600;color:#4c4642;margin-bottom:24px}.intro-list{margin:16px 0 20px;padding-left:22px;color:#514b47}.intro-list li{margin:7px 0}.meta-row{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.meta-chip{background:#faf8f6;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:14px;color:var(--muted)}
+    .primary-btn,.secondary-btn,.ghost-btn{width:100%;border:none;border-radius:16px;padding:15px 18px;cursor:pointer;transition:.18s ease;font-weight:700;min-height:52px}.primary-btn{background:var(--accent);color:#fff}.primary-btn:hover{background:var(--accent-dark)}.secondary-btn{background:var(--accent-soft);color:var(--accent-dark)}.ghost-btn{background:transparent;border:1px solid var(--line);color:#5a514b}.disclaimer{margin:14px 0 0;font-size:12px;color:#98908a;text-align:center}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.progress-wrap{flex:1}.progress-label{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:7px}.progress{height:8px;background:#eee8e3;border-radius:999px;overflow:hidden}.progress>span{display:block;height:100%;width:0;background:var(--accent);transition:width .25s ease}.question-no{font-size:13px;color:var(--muted);margin-bottom:8px}.question-text{font-size:22px;font-weight:700;line-height:1.55;margin-bottom:22px}.options{display:grid;gap:12px}.option-btn{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:16px;padding:15px 16px;cursor:pointer;color:#3e3935;line-height:1.55;transition:.16s ease}.option-btn:hover{border-color:#cbb7ac;background:#fcfaf8}.option-btn.selected{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-dark);font-weight:600}.option-key{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:1px solid #dacbc3;margin-right:10px;font-size:13px;vertical-align:top}.nav-row{display:flex;gap:12px;margin-top:22px}.nav-row button{flex:1}
+    .result-head{text-align:center;padding-bottom:8px}.result-type{font-size:30px;line-height:1.35;margin:8px 0 4px}.score-big{font-size:42px;line-height:1;font-weight:800;color:var(--accent-dark);margin:18px 0 6px}.score-label{color:var(--muted);font-size:14px}.result-note{margin-top:18px;background:#faf8f6;border:1px solid var(--line);border-radius:16px;padding:14px 16px;color:#5e5752;font-size:14px}.section{margin-top:28px}.dimension-item{margin-bottom:18px}.dimension-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px;font-size:14px}.dimension-name{font-weight:700}.dimension-score{color:var(--accent-dark);font-weight:700}.bar{height:10px;background:#eee8e3;border-radius:999px;overflow:hidden}.bar>span{display:block;height:100%;border-radius:999px;background:var(--accent);width:0;transition:width .4s ease}.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.insight-card{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fcfbfa}.insight-card small{display:block;color:var(--muted);margin-bottom:5px}.insight-card strong{font-size:17px;color:#3e3935}.explain{background:#faf8f6;border:1px solid var(--line);border-radius:18px;padding:18px}.explain p:last-child{margin-bottom:0}.action-list{margin:0;padding-left:22px}.action-list li{margin:10px 0}.result-actions{display:grid;gap:10px;margin-top:28px}.footer-small{text-align:center;font-size:12px;color:#9a928c;margin-top:18px}
+    @media (max-width:640px){.app{padding:14px 12px 28px}.card{padding:22px 18px;border-radius:18px}h1{font-size:27px}h2{font-size:22px}.subtitle{font-size:17px}.question-text{font-size:20px}.result-type{font-size:27px}.insight-grid{grid-template-columns:1fr}.nav-row{flex-direction:column-reverse}}
   </style>
 </head>
 <body>
-  <main class="app">
-    <div class="brand"><span class="brand-mark" aria-hidden="true">安</span>她的收入安全感</div>
+<main class="app"><div class="shell">
+  <section id="homePage" class="card">
+    <span class="eyebrow">内部测试版 · V1</span>
+    <h1>《35+女性收入安全感测评》</h1>
+    <p class="subtitle">如果现在的收入发生变化，你还有多少选择？</p>
+    <p>这不是收入高低测试，而是帮助你了解：</p>
+    <ul class="intro-list"><li>你的收入系统能不能扛住变化</li><li>有没有第二收入支点</li><li>是否具备独立变现能力</li><li>面对变化时是否还有重新开始的能力</li></ul>
+    <div class="meta-row"><div class="meta-chip">18道题</div><div class="meta-chip">约3分钟</div><div class="meta-chip">无需登录</div></div>
+    <button id="startBtn" class="primary-btn">开始测试</button>
+    <p class="disclaimer">本测试为个人自我评估工具，不构成财务、投资或职业建议。</p>
+  </section>
 
-    <section id="home" class="screen active" aria-labelledby="home-title">
-      <div class="card">
-        <p class="eyebrow">INCOME SECURITY CHECK</p>
-        <h1 id="home-title">35+女性<br>收入安全感测评</h1>
-        <p class="lead">花几分钟，看见你与收入之间真实的安全距离，为下一阶段的选择找到更清晰的起点。</p>
-        <div class="features" aria-label="测评信息">
-          <div class="feature"><strong>3</strong><span>道示例题</span></div>
-          <div class="feature"><strong>约 1</strong><span>分钟完成</span></div>
-          <div class="feature"><strong>1 份</strong><span>即时结果</span></div>
-        </div>
-        <button class="button" id="start-button" type="button">开始测评</button>
-        <p class="privacy">内部测试版本 · 所有数据仅在当前浏览器中处理</p>
-      </div>
-    </section>
+  <section id="quizPage" class="card hidden">
+    <div class="topbar"><div class="progress-wrap"><div class="progress-label"><span>测试进度</span><span id="progressText">1 / 18</span></div><div class="progress"><span id="progressBar"></span></div></div></div>
+    <div class="question-no" id="questionNo">第1题</div>
+    <div class="question-text" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="nav-row"><button id="prevBtn" class="ghost-btn">返回上一题</button><button id="nextBtn" class="primary-btn">下一题</button></div>
+  </section>
 
-    <section id="quiz" class="screen" aria-labelledby="question-title">
-      <div class="card">
-        <div class="progress-head"><span id="progress-text">问题 1 / 3</span><span id="progress-percent">33%</span></div>
-        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
-        <p class="eyebrow" id="dimension-label">收入稳定性</p>
-        <h2 id="question-title"></h2>
-        <div class="options" id="options" role="radiogroup" aria-labelledby="question-title"></div>
-        <div class="nav-actions">
-          <button class="button secondary" id="back-button" type="button">返回</button>
-          <button class="button" id="next-button" type="button" disabled>下一题</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="result" class="screen" aria-labelledby="result-title">
-      <div class="card">
-        <div class="result-top">
-          <p class="eyebrow">YOUR RESULT</p>
-          <div class="result-badge" aria-label="示例评级 B">B</div>
-          <h2 class="result-title" id="result-title">稳步筑基型</h2>
-          <p class="result-copy">你已经具备一定的收入安全基础，也清楚自己在意什么。接下来，比盲目追求增长更重要的，是补齐薄弱环节、建立可持续的收入结构。</p>
-        </div>
-        <div class="result-note"><strong>示例结果说明</strong><br>当前结果仅用于演示完整流程。正式版本将基于18道题、六个维度综合评分，并生成 S / A / B / C / D 五级结果。</div>
-        <button class="button" id="restart-button" type="button">重新测评</button>
-      </div>
-    </section>
-
-    <footer>© 2026 35+女性收入安全感测评 · 内部测试版</footer>
-  </main>
-
-  <script>
-    // 示例题库：后续可直接替换为正式18道题，并增加维度与分值字段。
-    const questions = [
-      {
-        dimension: "收入稳定性",
-        text: "如果主要收入突然中断，你现有的储备大约可以维持多久？",
-        options: ["不足1个月", "1—3个月", "3—6个月", "6个月以上"]
-      },
-      {
-        dimension: "收入多样性",
-        text: "除了主要工作收入，你目前是否拥有其他持续收入来源？",
-        options: ["暂时没有", "正在尝试建立", "有一项但不稳定", "有一项或多项稳定来源"]
-      },
-      {
-        dimension: "未来掌控感",
-        text: "面对未来三年的职业与收入变化，你现在的感受更接近哪一种？",
-        options: ["非常焦虑，不知从何开始", "有些担心，尚无具体计划", "方向大致清楚，正在行动", "目标明确，并有持续推进的计划"]
-      }
-    ];
-
-    const state = { current: 0, answers: [] };
-    const screens = document.querySelectorAll(".screen");
-    const questionTitle = document.querySelector("#question-title");
-    const dimensionLabel = document.querySelector("#dimension-label");
-    const optionsContainer = document.querySelector("#options");
-    const nextButton = document.querySelector("#next-button");
-    const backButton = document.querySelector("#back-button");
-
-    function showScreen(id) {
-      screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function renderQuestion() {
-      const question = questions[state.current];
-      const progress = Math.round(((state.current + 1) / questions.length) * 100);
-      questionTitle.textContent = question.text;
-      dimensionLabel.textContent = question.dimension;
-      document.querySelector("#progress-text").textContent = `问题 ${state.current + 1} / ${questions.length}`;
-      document.querySelector("#progress-percent").textContent = `${progress}%`;
-      document.querySelector("#progress-bar").style.width = `${progress}%`;
-      optionsContainer.replaceChildren();
-
-      question.options.forEach((option, index) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = `option${state.answers[state.current] === index ? " selected" : ""}`;
-        button.setAttribute("role", "radio");
-        button.setAttribute("aria-checked", state.answers[state.current] === index);
-        button.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + index)}</span><span>${option}</span>`;
-        button.addEventListener("click", () => {
-          state.answers[state.current] = index;
-          renderQuestion();
-        });
-        optionsContainer.append(button);
-      });
-
-      nextButton.disabled = state.answers[state.current] === undefined;
-      nextButton.textContent = state.current === questions.length - 1 ? "查看结果" : "下一题";
-      backButton.textContent = state.current === 0 ? "返回首页" : "上一题";
-    }
-
-    document.querySelector("#start-button").addEventListener("click", () => {
-      renderQuestion();
-      showScreen("quiz");
-    });
-
-    nextButton.addEventListener("click", () => {
-      if (state.answers[state.current] === undefined) return;
-      if (state.current < questions.length - 1) {
-        state.current += 1;
-        renderQuestion();
-      } else {
-        showScreen("result");
-      }
-    });
-
-    backButton.addEventListener("click", () => {
-      if (state.current === 0) showScreen("home");
-      else {
-        state.current -= 1;
-        renderQuestion();
-      }
-    });
-
-    document.querySelector("#restart-button").addEventListener("click", () => {
-      state.current = 0;
-      state.answers = [];
-      showScreen("home");
-    });
-  </script>
+  <section id="resultPage" class="card hidden">
+    <div class="result-head"><span class="eyebrow">你的测评结果</span><div class="result-type" id="resultType"></div><div class="score-big" id="totalScore"></div><div class="score-label">收入安全感综合分 / 100</div><div class="result-note">这个分数不是对收入高低的评价，而是对你当前收入系统“抗变化、可替代、可掌控”程度的一个自我评估。</div></div>
+    <div class="section"><h2>六维度结果</h2><div id="dimensionList"></div></div>
+    <div class="section"><h2>你的结构重点</h2><div class="insight-grid"><div class="insight-card"><small>你的当前优势</small><strong id="strongestDimension"></strong></div><div class="insight-card"><small>当前优先补强</small><strong id="weakestDimension"></strong></div></div></div>
+    <div class="section"><h2>结果解释</h2><div class="explain" id="resultExplanation"></div></div>
+    <div class="section"><h2>未来30天建议</h2><ol class="action-list" id="actionList"></ol></div>
+    <div class="result-actions"><button class="secondary-btn" id="adviceBtn">查看我的收入结构行动建议</button><button class="ghost-btn" id="restartBtn">重新测试</button></div>
+    <div class="footer-small">内部测试版暂未连接AI、登录、数据库或商业产品。</div>
+  </section>
+</div></main>
+<script>
+const questions=[
+{dimension:"现金流缓冲力",text:"如果从下个月开始，你的主要收入暂时停止，你目前的家庭基本支出大约可以维持多久？",options:["6个月以上","3—6个月","1—3个月","不到1个月"]},
+{dimension:"现金流缓冲力",text:"过去12个月，如果遇到一笔原计划之外的较大支出，你通常是怎么处理的？",options:["直接用已有储备解决","用储备解决，同时调整后面的支出","需要临时增加收入、借款或使用信用额度","会影响基本生活安排，只能尽量拖延或回避"]},
+{dimension:"现金流缓冲力",text:"如果未来3个月收入减少约30%，你目前的家庭支出中，有多少可以在一个月内调整，而不影响基本生活？",options:["很大一部分都可以调整","有一部分可以调整","能调整的很少","几乎没有可以调整的空间"]},
+{dimension:"收入稳定度",text:"回看过去12个月，你的主要收入更接近哪种情况？",options:["每个月都比较规律，变化很小","有一些变化，但大致可以预期","有过几次明显变化，比较难提前判断","经常出现较大的波动或中断"]},
+{dimension:"收入稳定度",text:"过去12个月，你的主要收入有没有出现过明显的中断、延迟或突然减少？",options:["基本没有","有过1次短期情况","有过2—3次","多次发生，已经影响日常安排"]},
+{dimension:"收入稳定度",text:"你现在安排家庭每月支出时，对未来收入的确定程度更接近：",options:["提前几个月都能比较明确地安排","大致可以安排未来2—3个月","基本只能确定下一个月","收入变化太大，很难提前安排"]},
+{dimension:"收入多元度",text:"过去3个月，你实际拿到过钱的收入来源有几种？",options:["3种及以上","2种","1种","目前没有实际收入来源"]},
+{dimension:"收入多元度",text:"如果你最主要的收入来源暂停3个月，你现有的其他收入大约能覆盖多少基本生活支出？",options:["大部分或全部","大约一半左右","只能覆盖很小一部分","目前没有其他收入可以补充"]},
+{dimension:"收入多元度",text:"你目前的其他收入来源，与主要收入来源之间的关系更接近：",options:["基本独立，即使主要收入变化，其他收入仍可以继续","大部分可以独立运行","很大程度上仍依赖同一个公司、客户或平台","实际上没有其他收入来源"]},
+{dimension:"个人变现能力",text:"如果不依赖现在的公司、岗位或主要收入来源，你目前有没有一项可以单独拿出来收费的能力？",options:["有，而且我已经清楚知道可以提供什么、卖给谁","有，大致知道可以怎么变现","可能有，但还没有梳理清楚","目前还说不出一项明确可收费的能力"]},
+{dimension:"个人变现能力",text:"过去12个月，你有没有把自己擅长的一件事情，整理成别人可以付费购买的服务、产品或内容？",options:["已经做出来并有人付费","已经做出来，但还没有稳定付费","想过，也做过一些准备","从来没有做过"]},
+{dimension:"个人变现能力",text:"过去12个月，是否有人在非工资关系下，真实为你的技能、经验、内容或服务付过费？",options:["有，而且发生过多次","有过1次","有人表达过付费意愿，但还没有成交","没有发生过"]},
+{dimension:"收入掌控度",text:"过去12个月，当你希望增加收入时，你实际做过的事情更接近：",options:["主动开发新的客户、产品、服务或收入渠道","主动争取更多工作机会或更高收入","主要等待公司、客户或平台提供更多机会","基本没有主动改变"]},
+{dimension:"收入掌控度",text:"在你目前最主要的收入来源中，你能够自己决定的事情有多少？",options:["收入方式、工作量、价格或收费方式等多个关键环节都能自己决定","有一部分关键环节可以自己决定","只有少数事情可以自己决定","基本由公司、老板、平台或客户决定"]},
+{dimension:"收入掌控度",text:"回看过去12个月，你有没有主动创造过一个原本不存在的收入机会？",options:["有过多次","有过1次","想过或尝试过，但没有形成结果","基本没有"]},
+{dimension:"转型适应力",text:"过去12个月，当你明显感觉工作、行业或收入环境在变化时，你通常多久会开始采取实际行动？",options:["很快开始学习、尝试或调整","观察一段时间后开始行动","通常等变化已经明显影响到自己才行动","大多停留在担心或观望，还没有真正行动"]},
+{dimension:"转型适应力",text:"过去12个月，当你发现原来的工作方式或收入方式效果变差时，你通常怎么做？",options:["很快尝试新的方法，并根据结果调整","先观察，再逐步调整","通常等问题比较明显后才改变","即使效果不好，也倾向于继续原来的方式"]},
+{dimension:"转型适应力",text:"过去12个月，你有没有把自己原来的一项能力，迁移到新的平台、工具、行业或工作场景？",options:["已经完成，并产生了实际结果","已经尝试过","有想法，但还没有行动","没有"]}
+];
+const dimensionOrder=["现金流缓冲力","收入稳定度","收入多元度","个人变现能力","收入掌控度","转型适应力"];
+const weights={"现金流缓冲力":.20,"收入稳定度":.15,"收入多元度":.20,"个人变现能力":.20,"收入掌控度":.15,"转型适应力":.10};
+const resultContent={
+"主动掌控型":{status:"你的收入安全感已经不只是来自“现在有收入”，而是来自比较完整的缓冲、变现、掌控和转型能力。即使环境发生变化，你也拥有较多选择。",advantage:"你最大的优势，是拥有较强的选择权和主动创造收入机会的能力。",risk:"主要风险不是收入中断，而是同时做得太多，或者过度依赖个人时间，导致收入系统难以继续放大。",problem:"当前最值得解决的，是把已经验证过的能力和收入方式进一步产品化、系统化。",actions:["梳理现在所有收入来源，找出最值得长期放大的1—2个核心支点。","选择一个已经验证过的能力，尝试把它从“靠时间换收入”升级成更标准化的产品或服务。","为未来12个月设定一个收入结构目标，而不只是设定一个总收入目标。"]},
+"单点依赖型":{status:"你当前的收入可能并不差，甚至相当稳定，但收入安全感主要建立在一个核心支点上。一旦这个支点发生变化，你的整体收入结构会受到明显影响。",advantage:"你最大的优势，是现有主收入通常已经形成一定基础，可以给你留下搭建第二支点的时间。",risk:"主要风险是把“现在稳定”误认为“长期稳定”，而忽略了收入来源和收入控制权的集中。",problem:"当前最值得解决的，是建立第一个独立于主收入之外、可以由自己逐步掌控的收入支点。",actions:["梳理一项可以独立于主业之外使用的技能、经验或资源。","只选择一个低成本第二收入方向，不同时启动多个副业。","在30天内完成一次小规模真实验证：发布、报价、成交或获得明确市场反馈。"]},
+"多元起步型":{status:"你已经不再把全部收入希望放在一个地方，并且开始建立不同的收入可能。现在真正的课题，是让这些尝试从“零散机会”变成“稳定结构”。",advantage:"你最大的优势，是已经有行动和市场验证意识，也更愿意主动寻找新的收入路径。",risk:"主要风险是方向太多、投入分散，最后每个方向都很忙，却没有一个真正形成稳定结果。",problem:"当前最值得解决的，是集中资源验证最有潜力的一条收入路径。",actions:["把现在所有收入尝试列出来，只保留未来30天最值得验证的1个重点方向。","明确这个方向解决谁的什么问题，以及对方为什么愿意付费。","在30天内完成至少一次真实成交或一次完整的付费路径测试。"]},
+"稳定进阶型":{status:"你的当前收入和生活整体比较稳定，也有一定缓冲空间。你现在最适合做的，不是推翻现状，而是在稳定基础上增加未来的选择。",advantage:"你最大的优势，是已经拥有相对稳定的底盘，可以用更低风险的方式尝试第二收入。",risk:"主要风险是长期停留在舒适区，直到外部环境发生明显变化才开始准备。",problem:"当前最值得解决的，是把“稳定”进一步升级成“可持续且有第二选择”。",actions:["盘点一项最容易从现有经验中延伸出来的第二收入方向。","每周固定留出一小块时间做低风险验证，不以辞职为前提。","30天内完成一个最小成果：一个服务原型、一份可售内容、一次真实报价或一次付费测试。"]},
+"重建蓄力型":{status:"你现在更像处在收入结构重新搭建的阶段。当前的收入、储备或变现路径还没有完全形成，但这并不等于没有能力，而是需要先找到最小、最清晰的起点。",advantage:"你最大的优势，是现在已经开始看见收入结构问题本身，这会比盲目寻找更多机会更重要。",risk:"主要风险是因为暂时没有明确答案，而同时做很多事情，或者迟迟不开始任何一个真实验证。",problem:"当前最值得解决的，不是一次性解决所有收入问题，而是建立第一个可重复的小收入支点。",actions:["先盘点过去5年里你最熟悉、做得最好、别人最常找你帮忙的3件事。","从中选1件最容易解决真实问题的能力，定义一个非常小的服务或产品。","在30天内找3—5个真实用户验证需求，争取完成第一次小额付费或明确市场反馈。"]}}
+;
+let currentQuestion=0,answers=new Array(questions.length).fill(null);
+const homePage=document.getElementById("homePage"),quizPage=document.getElementById("quizPage"),resultPage=document.getElementById("resultPage"),startBtn=document.getElementById("startBtn"),prevBtn=document.getElementById("prevBtn"),nextBtn=document.getElementById("nextBtn"),restartBtn=document.getElementById("restartBtn"),adviceBtn=document.getElementById("adviceBtn"),questionNo=document.getElementById("questionNo"),questionText=document.getElementById("questionText"),optionsContainer=document.getElementById("optionsContainer"),progressText=document.getElementById("progressText"),progressBar=document.getElementById("progressBar");
+startBtn.addEventListener("click",()=>{homePage.classList.add("hidden");quizPage.classList.remove("hidden");currentQuestion=0;renderQuestion();scrollTo(0,0)});
+prevBtn.addEventListener("click",()=>{if(currentQuestion>0){currentQuestion--;renderQuestion();scrollTo(0,0)}});
+nextBtn.addEventListener("click",()=>{if(answers[currentQuestion]===null){alert("请先选择一个答案，再进入下一题。");return}if(currentQuestion<questions.length-1){currentQuestion++;renderQuestion();scrollTo(0,0)}else calculateAndShowResult()});
+restartBtn.addEventListener("click",()=>{answers=new Array(questions.length).fill(null);currentQuestion=0;resultPage.classList.add("hidden");homePage.classList.remove("hidden");scrollTo(0,0)});
+adviceBtn.addEventListener("click",()=>alert("这是内部测试版。后续这里可以连接个性化行动建议、公众号文章或私域承接页面。"));
+function renderQuestion(){const q=questions[currentQuestion];questionNo.textContent=`第${currentQuestion+1}题 · ${q.dimension}`;questionText.textContent=q.text;progressText.textContent=`${currentQuestion+1} / ${questions.length}`;progressBar.style.width=`${((currentQuestion+1)/questions.length)*100}%`;optionsContainer.innerHTML="";q.options.forEach((option,index)=>{const btn=document.createElement("button");btn.className="option-btn"+(answers[currentQuestion]===index?" selected":"");btn.innerHTML=`<span class="option-key">${String.fromCharCode(65+index)}</span>${option}`;btn.onclick=()=>{answers[currentQuestion]=index;renderQuestion()};optionsContainer.appendChild(btn)});prevBtn.disabled=currentQuestion===0;prevBtn.style.opacity=currentQuestion===0?".45":"1";nextBtn.textContent=currentQuestion===questions.length-1?"查看结果":"下一题"}
+function answerToScore(i){return 4-i}
+function calculateDimensionScores(){const raw={};dimensionOrder.forEach(d=>raw[d]=0);questions.forEach((q,i)=>raw[q.dimension]+=answerToScore(answers[i]));const standardized={};dimensionOrder.forEach(d=>standardized[d]=((raw[d]-3)/9)*100);return standardized}
+function calculateTotal(d){let total=0;dimensionOrder.forEach(k=>total+=d[k]*weights[k]);return Math.round(total)}
+function determineType(total,d){const cash=d["现金流缓冲力"],stability=d["收入稳定度"],diversity=d["收入多元度"],monetization=d["个人变现能力"],control=d["收入掌控度"],adaptability=d["转型适应力"];if(total>=75&&cash>=60&&stability>=60&&diversity>=60&&monetization>=60&&control>=70&&adaptability>=60&&(diversity+monetization)>=130)return"主动掌控型";if(diversity<50&&control<55&&stability>=55)return"单点依赖型";if(diversity>=65&&monetization>=60&&control>=50&&total>=50)return"多元起步型";if(cash>=65&&stability>=65&&total>=60)return"稳定进阶型";return"重建蓄力型"}
+function calculateAndShowResult(){const d=calculateDimensionScores(),total=calculateTotal(d),type=determineType(total,d);quizPage.classList.add("hidden");resultPage.classList.remove("hidden");document.getElementById("resultType").textContent=`你的收入安全感类型：${type}`;document.getElementById("totalScore").textContent=total;const list=document.getElementById("dimensionList");list.innerHTML="";dimensionOrder.forEach(k=>{const score=Math.round(d[k]),item=document.createElement("div");item.className="dimension-item";item.innerHTML=`<div class="dimension-head"><span class="dimension-name">${k}</span><span class="dimension-score">${score}</span></div><div class="bar"><span style="width:${score}%"></span></div>`;list.appendChild(item)});const sorted=[...dimensionOrder].sort((a,b)=>d[b]-d[a]);document.getElementById("strongestDimension").textContent=sorted[0];document.getElementById("weakestDimension").textContent=sorted[sorted.length-1];const c=resultContent[type];document.getElementById("resultExplanation").innerHTML=`<p><strong>你现在的状态：</strong>${c.status}</p><p><strong>最大优势：</strong>${c.advantage}</p><p><strong>主要风险：</strong>${c.risk}</p><p><strong>当前最值得解决的问题：</strong>${c.problem}</p>`;const actionList=document.getElementById("actionList");actionList.innerHTML="";c.actions.forEach(a=>{const li=document.createElement("li");li.textContent=a;actionList.appendChild(li)});scrollTo(0,0)}
+</script>
 </body>
 </html>
